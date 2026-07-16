@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>محكمة الذهبيون | قضية فرشاة أحمر الخدود</title>
+  <meta name="description" content="محاكاة محاكمة حقيقية لقضية الذهبيون - سرقة فرشاة أحمر الخدود" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Particles Background -->
+  <div id="particles-bg"></div>
+
+  <!-- Gavel Sound Effect (visual) -->
+  <div id="gavel-overlay" class="gavel-overlay hidden">
+    <div class="gavel-icon">⚖️</div>
+    <div class="gavel-text">انعقدت الجلسة!</div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="main-header">
+    <div class="header-emblem">
+      <div class="scales-icon">⚖️</div>
+    </div>
+    <div class="header-content">
+      <p class="header-subtitle">بسم الله الرحمن الرحيم</p>
+      <h1 class="header-title">محكمة الذهبيون العليا</h1>
+      <p class="header-decree">قضية رقم ٢٠٢٦/١ — سرقة فرشاة أحمر الخدود</p>
+    </div>
+    <div class="header-emblem">
+      <div class="scales-icon">⚖️</div>
+    </div>
+  </header>
+
+  <!-- CASE BANNER -->
+  <section class="case-banner">
+    <div class="banner-inner">
+      <div class="case-date-badge">
+        <span class="date-label">موعد الجلسة</span>
+        <span class="date-value">الجمعة ١٧ مايو ٢٠٢٦</span>
+        <span class="date-time">الساعة ١:٠٠ صباحاً بتوقيت مصر</span>
+      </div>
+      <div class="case-title-center">
+        <h2 class="case-name">قضيّـة الذهبيون</h2>
+        <p class="case-charge">التهمة: سرقة فرشاة أحمر خدود</p>
+        <div class="vs-badge">المجني عليها <span class="vs">ضـد</span> المتهمون</div>
+      </div>
+      <div class="case-date-badge">
+        <span class="date-label">القناة الصوتية</span>
+        <span class="date-value">حسام حسن</span>
+        <span class="date-time">مدرب منتخب مصر</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="countdown-section">
+    <h3 class="countdown-title">⏳ العد التنازلي لانعقاد الجلسة</h3>
+    <div class="countdown-grid" id="countdown">
+      <div class="count-box"><span id="days">00</span><label>أيام</label></div>
+      <div class="count-sep">:</div>
+      <div class="count-box"><span id="hours">00</span><label>ساعات</label></div>
+      <div class="count-sep">:</div>
+      <div class="count-box"><span id="minutes">00</span><label>دقائق</label></div>
+      <div class="count-sep">:</div>
+      <div class="count-box"><span id="seconds">00</span><label>ثوانٍ</label></div>
+    </div>
+  </section>
+
+  <!-- CASE ROADMAP -->
+  <section class="roadmap-section">
+    <h2 class="section-title">🗺️ مسار القضية</h2>
+    <div class="roadmap">
+
+      <div class="road-step active" id="step-1">
+        <div class="step-number">١</div>
+        <div class="step-content">
+          <h3>افتتاح الجلسة</h3>
+          <p>يُعلن القاضي يوسف محمود جودة افتتاح الجلسة ويطلب من الجميع الوقوف تحية للمحكمة. يقرأ العسكري خالد سعد معني أمر الاستدعاء الرسمي.</p>
+          <div class="step-actions">
+            <span class="actor judge">👨‍⚖️ القاضي يوسف</span>
+            <span class="actor military">🪖 العسكري خالد</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="road-connector"></div>
+
+      <div class="road-step" id="step-2">
+        <div class="step-number">٢</div>
+        <div class="step-content">
+          <h3>قراءة لائحة الاتهام</h3>
+          <p>تقرأ وكيلة النيابة جانا أشرف إبراهيم لائحة الاتهام الرسمية ضد المتهمين الستة بتهمة سرقة فرشاة أحمر الخدود من المجني عليها دعاء أشرف المغربي.</p>
+          <div class="step-actions">
+            <span class="actor prosecutor">⚖️ وكيلة النيابة جانا</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="road-connector"></div>
+
+      <div class="road-step" id="step-3">
+        <div class="step-number">٣</div>
+        <div class="step-content">
+          <h3>استجواب المتهمين</h3>
+          <p>تبدأ وكيلة النيابة بسؤال كل متهم على حدة عن مكانه وقت الجريمة. يحق للمتهمين الصمت أو الإجابة. يتدخل محامي الدفاع عصام أمير عند الضرورة.</p>
+          <div class="step-actions">
+            <span class="actor defendant">🧑 مريم أحمد</span>
+            <span class="actor defendant">🧑 شهد خالد</span>
+            <span class="actor defendant">🧑 سارة خالد</span>
+            <span class="actor defendant">🧑 رجاء أحمد</span>
+            <span class="actor defendant">🧑 عبدالرحمن جمال</span>
+            <span class="actor defendant">🧑 حسن سعد</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="road-connector"></div>
+
+      <div class="road-step" id="step-4">
+        <div class="step-number">٤</div>
+        <div class="step-content">
+          <h3>شهادة المجني عليها</h3>
+          <p>تدلي دعاء أشرف المغربي بشهادتها حول واقعة السرقة وتصف الفرشاة المسروقة. يحق لمحامي الدفاع التشكيك في شهادتها.</p>
+          <div class="step-actions">
+            <span class="actor victim">👩 دعاء أشرف - المجني عليها</span>
+            <span class="actor defense">👔 مؤمن أحمد - دفاع المجني عليها</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="road-connector"></div>
+
+      <div class="road-step" id="step-5">
+        <div class="step-number">٥</div>
+        <div class="step-content">
+          <h3>شهادة الشهود</h3>
+          <p>يُدعى كل من كان حاضراً يوم الواقعة للإدلاء بشهادته. الشهادة تقدَّم تحت القسم ومن يشهد زوراً يتحمل المسئولية القانونية.</p>
+          <div class="step-actions">
+            <span class="actor witness">👥 كل من كان حاضراً</span>
+          </div>
+          <div class="witness-join-box" id="witness-box">
+            <p class="witness-prompt">هل كنت شاهداً على الواقعة؟</p>
+            <input type="text" id="witness-name" placeholder="اكتب اسمك هنا..." class="witness-input" />
+            <button class="witness-btn" onclick="joinAsWitness()">🤚 أنا شاهد — أدلي بشهادتي</button>
+            <div id="witness-list" class="witness-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="road-connector"></div>
+
+      <div class="road-step" id="step-6">
+        <div class="step-number">٦</div>
+        <div class="step-content">
+          <h3>مرافعة الدفاع</h3>
+          <p>يقدّم المحامي عصام أمير محمد حججه الدفاعية عن المتهمين ويطعن في الأدلة المقدمة. ثم يرد محامي المجني عليها مؤمن أحمد علي بمرافعته المضادة.</p>
+          <div class="step-actions">
+            <span class="actor defense">👔 عصام أمير - دفاع المتهمين</span>
+            <span class="actor defense">👔 مؤمن أحمد - دفاع المجني عليها</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="road-connector"></div>
+
+      <div class="road-step" id="step-7">
+        <div class="step-number">٧</div>
+        <div class="step-content">
+          <h3>المداولة والحكم</h3>
+          <p>يتداول القاضيان يوسف محمود جودة وأحمد عصام البجوري في غرفة المداولة ثم يُعلنان الحكم. اللحظة الفاصلة: <strong>يُكرَم المرء أو يُهان!</strong></p>
+          <div class="step-actions">
+            <span class="actor judge">👨‍⚖️ القاضي يوسف</span>
+            <span class="actor judge">👨‍⚖️ القاضي أحمد</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="road-connector"></div>
+
+      <div class="road-step verdict-step" id="step-8">
+        <div class="step-number">⚖️</div>
+        <div class="step-content">
+          <h3>النطق بالحكم النهائي</h3>
+          <p>يُنطق بالحكم أمام الجميع. يوثق الصحفي أحمد عمرو السعدني من جريدة الذهبيون كل تفاصيل الجلسة التاريخية.</p>
+          <div class="step-actions">
+            <span class="actor press">📰 أحمد السعدني - الذهبيون</span>
+            <span class="actor military">🪖 العسكري خالد</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PARTICIPANTS -->
+  <section class="participants-section">
+    <h2 class="section-title">👥 المشاركون في القضية</h2>
+    <div class="participants-grid">
+
+      <!-- Judges -->
+      <div class="participant-card judge-card">
+        <div class="card-role-badge">المحكمة</div>
+        <div class="participant judge-p">
+          <div class="p-avatar">👨‍⚖️</div>
+          <div class="p-name">يوسف محمود جودة</div>
+          <div class="p-role">القاضي الأول</div>
+          <div class="p-desc">يرأس الجلسة ويُصدر الأحكام</div>
+        </div>
+        <div class="participant judge-p">
+          <div class="p-avatar">👨‍⚖️</div>
+          <div class="p-name">أحمد عصام البجوري</div>
+          <div class="p-role">القاضي الثاني</div>
+          <div class="p-desc">يشارك في المداولة وإصدار الحكم</div>
+        </div>
+      </div>
+
+      <!-- Prosecution -->
+      <div class="participant-card prosecution-card">
+        <div class="card-role-badge">النيابة العامة</div>
+        <div class="participant prosecutor-p">
+          <div class="p-avatar">⚖️</div>
+          <div class="p-name">جانا أشرف إبراهيم</div>
+          <div class="p-role">وكيلة النيابة</div>
+          <div class="p-desc">تمثل الدولة وتثبت الاتهام</div>
+        </div>
+      </div>
+
+      <!-- Victim & Defense -->
+      <div class="participant-card victim-card">
+        <div class="card-role-badge">المجني عليها ودفاعها</div>
+        <div class="participant victim-p">
+          <div class="p-avatar">👩</div>
+          <div class="p-name">دعاء أشرف المغربي</div>
+          <div class="p-role">المجني عليها</div>
+          <div class="p-desc">صاحبة فرشاة أحمر الخدود المسروقة</div>
+        </div>
+        <div class="participant defense-p">
+          <div class="p-avatar">👔</div>
+          <div class="p-name">مؤمن أحمد علي</div>
+          <div class="p-role">محامي دفاع المجني عليها</div>
+          <div class="p-desc">يدافع عن حقوق دعاء</div>
+        </div>
+      </div>
+
+      <!-- Defendants & Their Defense -->
+      <div class="participant-card defendants-card">
+        <div class="card-role-badge">المتهمون (٦ متهمين)</div>
+        <div class="defendants-grid">
+          <div class="defendant-pill">🧑 مريم أحمد عدلي</div>
+          <div class="defendant-pill">🧑 شهد خالد إبراهيم</div>
+          <div class="defendant-pill">🧑 سارة خالد إبراهيم</div>
+          <div class="defendant-pill">🧑 رجاء أحمد علي</div>
+          <div class="defendant-pill">🧑 عبدالرحمن جمال عبدالغفار</div>
+          <div class="defendant-pill">🧑 حسن سعد رشوان</div>
+        </div>
+        <div class="participant defense-p" style="margin-top:1rem">
+          <div class="p-avatar">👔</div>
+          <div class="p-name">عصام أمير محمد</div>
+          <div class="p-role">محامي دفاع المتهمين</div>
+          <div class="p-desc">يدافع عن براءة المتهمين الستة</div>
+        </div>
+      </div>
+
+      <!-- Security & Press -->
+      <div class="participant-card support-card">
+        <div class="card-role-badge">الطاقم المساند</div>
+        <div class="participant military-p">
+          <div class="p-avatar">🪖</div>
+          <div class="p-name">خالد سعد معني</div>
+          <div class="p-role">العسكري</div>
+          <div class="p-desc">يحافظ على النظام ويُنفّذ أوامر المحكمة</div>
+        </div>
+        <div class="participant press-p">
+          <div class="p-avatar">📰</div>
+          <div class="p-name">أحمد عمرو السعدني</div>
+          <div class="p-role">الصحافة والتصوير</div>
+          <div class="p-desc">جريدة الذهبيون — يوثق الجلسة</div>
+        </div>
+        <div class="participant buffet-p">
+          <div class="p-avatar">☕</div>
+          <div class="p-name">أحمد حسام ماريون</div>
+          <div class="p-role">البوفيه</div>
+          <div class="p-desc">يُقدّم المرطوبات لأعضاء المحكمة</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RULES OF COURT -->
+  <section class="rules-section">
+    <h2 class="section-title">📜 نظام المحكمة والقواعد</h2>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-icon">🔇</div>
+        <h4>الصمت في القاعة</h4>
+        <p>لا يتكلم أحد إلا بإذن القاضي. من يخالف يُطرد من القاعة بأمر العسكري.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">🤲</div>
+        <h4>الشهادة تحت القسم</h4>
+        <p>كل شاهد يُقسِم بالله على الصدق قبل إدلاء شهادته.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">⚖️</div>
+        <h4>قرينة البراءة</h4>
+        <p>المتهم بريء حتى تثبت إدانته. على النيابة إثبات الاتهام.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">🚫</div>
+        <h4>حظر الصخب</h4>
+        <p>لا يُسمح بالضحك أو الصراخ أو مقاطعة المتحدث.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">📱</div>
+        <h4>الإعلام</h4>
+        <p>التصوير حصرياً لمراسل جريدة الذهبيون أحمد السعدني.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">☕</div>
+        <h4>البوفيه</h4>
+        <p>يُقدَّم المشروب فقط في فترات الاستراحة التي يُعلنها القاضي.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERDICT QUOTE -->
+  <section class="verdict-quote-section">
+    <div class="quote-inner">
+      <div class="quote-marks">"</div>
+      <p class="quote-text">ويومُ الامتحانِ يُكرَمُ المرءُ أو يُهانُ</p>
+      <div class="quote-marks closing">"</div>
+      <p class="quote-source">— شعار قضية الذهبيون</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="footer-content">
+      <p>⚖️ محكمة الذهبيون العليا — قضية رقم ٢٠٢٦/١</p>
+      <p>الجمعة ١٧ مايو ٢٠٢٦ | الساعة ١:٠٠ صباحاً | القناة الصوتية: حسام حسن</p>
+      <p class="footer-bismillah">بسم الله الرحمن الرحيم</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
