@@ -1,0 +1,303 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Default-Deny Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Primitive Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidRoomId(roomId) {
+      return roomId is string && roomId.size() == 5 && roomId.matches('^[A-Z0-9]{5}$');
+    }
+
+    // --- Validation Blueprints ---
+    function isValidSettings(s) {
+      return s is map
+        && s.keys().hasAll([
+          'startingMoney',
+          'goReward',
+          'freeParkingJackpot',
+          'maxPlayers',
+          'auctionEnabled',
+          'turnTimeLimitSec',
+          'gameDurationMin',
+          'jailBail',
+          'doubleGoBonus'
+        ])
+        && s.keys().hasOnly([
+          'startingMoney',
+          'goReward',
+          'freeParkingJackpot',
+          'maxPlayers',
+          'auctionEnabled',
+          'turnTimeLimitSec',
+          'gameDurationMin',
+          'jailBail',
+          'doubleGoBonus'
+        ])
+        && s.startingMoney is int && s.startingMoney >= 500 && s.startingMoney <= 20000
+        && s.goReward is int && s.goReward >= 50 && s.goReward <= 2000
+        && s.freeParkingJackpot is bool
+        && s.maxPlayers is int && s.maxPlayers >= 2 && s.maxPlayers <= 10
+        && s.auctionEnabled is bool
+        && s.turnTimeLimitSec is int && s.turnTimeLimitSec >= 0 && s.turnTimeLimitSec <= 300
+        && s.gameDurationMin is int && s.gameDurationMin >= 0 && s.gameDurationMin <= 180
+        && s.jailBail is int && s.jailBail >= 25 && s.jailBail <= 500
+        && s.doubleGoBonus is bool;
+    }
+
+    function isValidGameState(g) {
+      return g is map
+        && g.keys().hasAll([
+          'players',
+          'properties',
+          'currentTurnIndex',
+          'turnPhase',
+          'dice',
+          'consecutiveDoubles',
+          'treasuryPool',
+          'logs',
+          'activeCard',
+          'activeAuction',
+          'activeTrade',
+          'winnerId',
+          'turnCounter',
+          'lastActionId',
+          'matchStartedAt',
+          'turnStartedAt'
+        ])
+        && g.keys().hasOnly([
+          'players',
+          'properties',
+          'currentTurnIndex',
+          'turnPhase',
+          'dice',
+          'consecutiveDoubles',
+          'treasuryPool',
+          'logs',
+          'activeCard',
+          'activeAuction',
+          'activeTrade',
+          'winnerId',
+          'turnCounter',
+          'lastActionId',
+          'matchStartedAt',
+          'turnStartedAt'
+        ])
+        && g.players is list && g.players.size() >= 1 && g.players.size() <= 10 && g.players[0] is map
+        && g.properties is map
+        && g.currentTurnIndex is int && g.currentTurnIndex >= 0 && g.currentTurnIndex < 10
+        && g.turnPhase is string && g.turnPhase.size() >= 1 && g.turnPhase.size() <= 32
+        && g.dice is list && g.dice.size() == 2 && g.dice[0] is int && g.dice[1] is int
+        && g.consecutiveDoubles is int && g.consecutiveDoubles >= 0 && g.consecutiveDoubles <= 3
+        && g.treasuryPool is int && g.treasuryPool >= 0 && g.treasuryPool <= 1000000
+        && g.logs is list && g.logs.size() <= 80 && (g.logs.size() == 0 || g.logs[0] is map)
+        && (g.activeCard == null || g.activeCard is map)
+        && (g.activeAuction == null || g.activeAuction is map)
+        && (g.activeTrade == null || g.activeTrade is map)
+        && (g.winnerId == null || (g.winnerId is string && g.winnerId.size() <= 128))
+        && g.turnCounter is int && g.turnCounter >= 0 && g.turnCounter <= 100000
+        && g.lastActionId is string && g.lastActionId.size() <= 64
+        && g.matchStartedAt is int && g.matchStartedAt >= 0
+        && g.turnStartedAt is int && g.turnStartedAt >= 0;
+    }
+
+    function isValidRoom(data, roomId) {
+      return data is map
+        && data.keys().hasAll([
+          'roomId',
+          'hostUid',
+          'status',
+          'playerUids',
+          'settings',
+          'gameState',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'roomId',
+          'hostUid',
+          'status',
+          'playerUids',
+          'settings',
+          'gameState',
+          'createdAt',
+          'updatedAt'
+        ])
+        && isValidRoomId(data.roomId)
+        && data.roomId == roomId
+        && isValidId(data.hostUid)
+        && data.status is string && data.status in ['lobby', 'playing', 'finished']
+        && data.playerUids is list
+        && data.playerUids.size() >= 1
+        && data.playerUids.size() <= 10
+        && data.playerUids[0] is string && data.playerUids[0].size() <= 128
+        && isValidSettings(data.settings)
+        && isValidGameState(data.gameState)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidMessage(data, roomId) {
+      return data is map
+        && data.keys().hasAll([
+          'roomId',
+          'senderUid',
+          'senderName',
+          'senderColor',
+          'text',
+          'participantUids',
+          'createdAt'
+        ])
+        && data.keys().hasOnly([
+          'roomId',
+          'senderUid',
+          'senderName',
+          'senderColor',
+          'text',
+          'participantUids',
+          'createdAt'
+        ])
+        && isValidRoomId(data.roomId)
+        && data.roomId == roomId
+        && isValidId(data.senderUid)
+        && data.senderUid == request.auth.uid
+        && data.senderName is string && data.senderName.size() >= 1 && data.senderName.size() <= 32
+        && data.senderColor is string && data.senderColor.size() >= 4 && data.senderColor.size() <= 24
+        && data.text is string && data.text.size() >= 1 && data.text.size() <= 240
+        && data.participantUids is list
+        && data.participantUids.size() >= 1
+        && data.participantUids.size() <= 10
+        && data.participantUids[0] is string && data.participantUids[0].size() <= 128
+        && request.auth.uid in data.participantUids
+        && data.createdAt is timestamp;
+    }
+
+    // --- Room Action Helpers ---
+    function immutableRoomFieldsUnchanged() {
+      return incoming().roomId == existing().roomId
+        && incoming().hostUid == existing().hostUid
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time;
+    }
+
+    function isJoinLobbyAction() {
+      return existing().status == 'lobby'
+        && !(request.auth.uid in existing().playerUids)
+        && existing().playerUids.size() < existing().settings.maxPlayers
+        && existing().playerUids.size() < 10
+        && incoming().playerUids.size() == existing().playerUids.size() + 1
+        && incoming().playerUids.hasAll(existing().playerUids)
+        && request.auth.uid in incoming().playerUids
+        && incoming().diff(existing()).affectedKeys().hasOnly(['playerUids', 'gameState', 'updatedAt']);
+    }
+
+    function isLeaveLobbyAction() {
+      return existing().status == 'lobby'
+        && request.auth.uid in existing().playerUids
+        && existing().hostUid != request.auth.uid
+        && !(request.auth.uid in incoming().playerUids)
+        && incoming().playerUids.size() == existing().playerUids.size() - 1
+        && existing().playerUids.hasAll(incoming().playerUids)
+        && incoming().diff(existing()).affectedKeys().hasOnly(['playerUids', 'gameState', 'updatedAt']);
+    }
+
+    function isHostLobbyAction() {
+      return existing().status == 'lobby'
+        && existing().hostUid == request.auth.uid
+        && incoming().status in ['lobby', 'playing']
+        && existing().hostUid in incoming().playerUids
+        && incoming().diff(existing()).affectedKeys().hasOnly(['settings', 'status', 'gameState', 'playerUids', 'updatedAt']);
+    }
+
+    function isGameplayAction() {
+      return existing().status == 'playing'
+        && request.auth.uid in existing().playerUids
+        && incoming().status in ['playing', 'finished']
+        && incoming().diff(existing()).affectedKeys().hasOnly(['gameState', 'status', 'updatedAt']);
+    }
+
+    // --- Collection: /rooms/{roomId} ---
+    match /rooms/{roomId} {
+      // Exact room lookup by secret 5-char invite code (contains zero PII)
+      allow get: if isSignedIn() && isValidRoomId(roomId);
+
+      // Secure list query: users can only list rooms they belong to
+      allow list: if isSignedIn() && request.auth.uid in resource.data.playerUids;
+
+      // Create new room in lobby status with creator as host and sole initial player
+      allow create: if isSignedIn()
+        && isValidRoomId(roomId)
+        && isValidRoom(incoming(), roomId)
+        && incoming().hostUid == request.auth.uid
+        && incoming().status == 'lobby'
+        && incoming().playerUids.size() == 1
+        && incoming().playerUids[0] == request.auth.uid
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+
+      // Action-based updates with validation blueprint & terminal state lock
+      allow update: if isSignedIn()
+        && isValidRoomId(roomId)
+        && isValidRoom(incoming(), roomId)
+        && existing().status != 'finished'
+        && immutableRoomFieldsUnchanged()
+        && (
+          isJoinLobbyAction()
+          || isLeaveLobbyAction()
+          || isHostLobbyAction()
+          || isGameplayAction()
+        );
+
+      // Only host may delete a room while still in lobby
+      allow delete: if isSignedIn()
+        && isValidRoomId(roomId)
+        && existing().hostUid == request.auth.uid
+        && existing().status == 'lobby';
+
+      // --- Subcollection: /rooms/{roomId}/messages/{messageId} ---
+      match /messages/{messageId} {
+        // Master Gate on single-doc read
+        allow get: if isSignedIn()
+          && isValidRoomId(roomId)
+          && isValidId(messageId)
+          && request.auth.uid in get(/databases/$(database)/documents/rooms/$(roomId)).data.playerUids;
+
+        // Cost-safe list query without get() lookups
+        allow list: if isSignedIn()
+          && request.auth.uid in resource.data.participantUids;
+
+        // Master Gate + Parent Existence Check + Exact Membership Snapshot on create
+        allow create: if isSignedIn()
+          && isValidRoomId(roomId)
+          && isValidId(messageId)
+          && isValidMessage(incoming(), roomId)
+          && incoming().createdAt == request.time
+          && exists(/databases/$(database)/documents/rooms/$(roomId))
+          && request.auth.uid in get(/databases/$(database)/documents/rooms/$(roomId)).data.playerUids
+          && incoming().participantUids == get(/databases/$(database)/documents/rooms/$(roomId)).data.playerUids;
+
+        // Chat messages are append-only (immutable)
+        allow update, delete: if false;
+      }
+    }
+  }
+}

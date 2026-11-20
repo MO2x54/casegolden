@@ -1,0 +1,6 @@
+{
+  "name": "بنك الحظ أونلاين | Bank El-Hazz",
+  "description": "لعبة بنك الحظ الكلاسيكية أونلاين حتى 10 لاعبين أو محلياً مع المزاد العلني وكروت حظك والمحاكمة والصفقات باللغة العربية (RTL).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

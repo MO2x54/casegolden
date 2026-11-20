@@ -1,0 +1,133 @@
+{
+  "entities": {
+    "Room": {
+      "title": "Bank El-Hazz Room",
+      "description": "Synchronized multiplayer room and game state for Bank El-Hazz (up to 10 players).",
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5,
+          "pattern": "^[A-Z0-9]{5}$",
+          "description": "5-character uppercase alphanumeric room code."
+        },
+        "hostUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Immutable Firebase Auth UID of the room host."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["lobby", "playing", "finished"],
+          "description": "Lifecycle phase of the room."
+        },
+        "playerUids": {
+          "type": "array",
+          "description": "Bounded list of up to 10 authenticated player UIDs in the room."
+        },
+        "settings": {
+          "type": "object",
+          "description": "Host-configurable room rules (startingMoney, goReward, freeParkingJackpot, maxPlayers, auctionEnabled, turnTimeLimitSec, gameDurationMin, jailBail, doubleGoBonus)."
+        },
+        "gameState": {
+          "type": "object",
+          "description": "Synchronized board, player balances, properties, turn state, active card, live auction, trade offer, bounded event log, matchStartedAt, and turnStartedAt."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the room was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the latest state update."
+        }
+      },
+      "required": [
+        "roomId",
+        "hostUid",
+        "status",
+        "playerUids",
+        "settings",
+        "gameState",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ChatMessage": {
+      "title": "Room Chat Message",
+      "description": "Real-time chat message sent by a player inside an online Bank El-Hazz room.",
+      "type": "object",
+      "properties": {
+        "roomId": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5,
+          "pattern": "^[A-Z0-9]{5}$",
+          "description": "Parent room 5-character code."
+        },
+        "senderUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Authenticated UID of the message sender."
+        },
+        "senderName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "description": "Display nickname of the sender."
+        },
+        "senderColor": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 24,
+          "description": "Hex color associated with the sender's piece."
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "description": "Chat message body."
+        },
+        "participantUids": {
+          "type": "array",
+          "description": "Bounded snapshot of up to 10 player UIDs authorized to read this room message."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the message was posted."
+        }
+      },
+      "required": [
+        "roomId",
+        "senderUid",
+        "senderName",
+        "senderColor",
+        "text",
+        "participantUids",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/rooms/{roomId}": {
+      "schema": {
+        "$ref": "#/entities/Room"
+      },
+      "description": "Primary multiplayer room document storing lobby members, settings, and live Bank El-Hazz board state."
+    },
+    "/rooms/{roomId}/messages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/ChatMessage"
+      },
+      "description": "Scalable subcollection for live in-room chat messages."
+    }
+  }
+}

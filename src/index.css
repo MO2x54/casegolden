@@ -1,0 +1,93 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-display: 'Cairo', system-ui, sans-serif;
+    --font-body: 'Tajawal', 'Cairo', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  html {
+    font-family: var(--font-body);
+    direction: rtl;
+    color-scheme: dark;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Subtle classic Bank El-Hazz gold grid pattern for the center arena */
+.bank-grid-bg {
+  background-color: #0e1523;
+  background-image:
+    linear-gradient(to right, rgba(245, 158, 11, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 158, 11, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom dark scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.45);
+}
+
+@keyframes diceShake {
+  0% { transform: rotate(0deg) scale(1); }
+  20% { transform: rotate(-14deg) scale(1.08); }
+  45% { transform: rotate(16deg) scale(0.96); }
+  70% { transform: rotate(-10deg) scale(1.05); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.animate-dice {
+  animation: diceShake 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes tokenPop {
+  0% { transform: scale(0.85); }
+  55% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+.animate-token-pop {
+  animation: tokenPop 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes tokenHop {
+  0% { transform: translateY(0) scale(1); }
+  45% { transform: translateY(-9px) scale(1.22); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.animate-token-hop {
+  animation: tokenHop 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-dice,
+  .animate-token-pop,
+  .animate-token-hop {
+    animation: none !important;
+  }
+}
